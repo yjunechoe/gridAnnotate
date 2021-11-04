@@ -1,0 +1,9 @@
+Name: Undo grid annotation
+Description: Undo grid annotation
+Binding: undo_anno
+Interactive: true
+
+Name: Redo grid annotation
+Description: Redo grid annotation
+Binding: redo_anno
+Interactive: true
