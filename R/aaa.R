@@ -5,7 +5,7 @@
     get = function() { annos },
     push = function(anno) {
       if (cur_idx != length(annos)) { annos <<- annos[seq_len(cur_idx)] }
-      if (length(gnames()) <= 1) { annos <<- list() }
+      if (length(gnames()) == 0 | (length(gnames()) == 1 && gnames() == "layout")) { annos <<- list() }
       annos <<- c(annos, list(anno))
       cur_idx <<- length(annos)
     },
@@ -36,7 +36,10 @@ clear_anno_storage <- function() { .anno_storage$clear() }
 #' @return Current annotated figure as a grob
 #' @export
 undo_anno <- function() {
-  annos <- gnames()[-1]
+  annos <- gnames()
+  if (annos[1] == "layout") {
+    annos <- gnames()[-1]
+  }
   if (length(annos) == 0) { stop("No annotation to remove") }
   last <- paste0("^", annos[length(annos)], "$")
   popped <- grid::grid.get(last, grep = TRUE)
