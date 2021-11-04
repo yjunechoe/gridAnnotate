@@ -5,6 +5,47 @@ resolve_anno <- function(anno) {
   invisible(snapshot_anno())
 }
 
+#' Draw a line
+#'
+#' @return Current annotated figure as a grob
+#' @export
+anno_line <- function() {
+  message("Select start point:")
+  pos1 <- grid_locate()
+  message("Select end point:")
+  pos2 <- grid_locate()
+  line_annotation <- grid::linesGrob(
+    name = "anno_line",
+    x = c(pos1$x, pos2$x),
+    y = c(pos1$y, pos2$y)
+  )
+  resolve_anno(line_annotation)
+}
+
+#' Draw a vertical or horizontal line
+#'
+#' @return Current annotated figure as a grob
+#' @export
+anno_vhline <- function() {
+  message("Select starting reference point:")
+  pos1 <- grid_locate()
+  message("Select vertical or horizontal end point:")
+  pos2 <- grid_locate()
+  run <- abs(as.numeric(pos1$x) - as.numeric(pos2$x))
+  rise <- abs(as.numeric(pos1$y) - as.numeric(pos2$y))
+  if (abs(atan2(rise, run)) < atan(1)) {
+    pos2$y <- pos1$y
+  } else {
+    pos2$x <- pos1$x
+  }
+  line_annotation <- grid::linesGrob(
+    name = "anno_line",
+    x = c(pos1$x, pos2$x),
+    y = c(pos1$y, pos2$y)
+  )
+  resolve_anno(line_annotation)
+}
+
 #' Draw a curve
 #'
 #' @return Current annotated figure as a grob
@@ -15,7 +56,7 @@ anno_curve <- function() {
   message("Select end point:")
   pos2 <- grid_locate()
   curvature <- readline(prompt = "curvature [left = -1, straight = 0, right = 1]: ")
-  line_annotation <- grid::curveGrob(
+  curve_annotation <- grid::curveGrob(
     name = "anno_line",
     x1 = pos1$x,
     x2 = pos2$x,
@@ -24,7 +65,7 @@ anno_curve <- function() {
     curvature = as.numeric(curvature),
     arrow = grid::arrow(length = .anno_unit)
   )
-  resolve_anno(line_annotation)
+  resolve_anno(curve_annotation)
 }
 
 #' Draw a bezier curve
@@ -69,6 +110,10 @@ anno_text <- function() {
   resolve_anno(text_annotation)
 }
 
+#' Draw a rectangle outline
+#'
+#' @return Current annotated figure as a grob
+#' @export
 anno_rect <- function() {
   message("Select top-left corner:")
   pos1 <- grid_locate()

@@ -2,7 +2,10 @@
 
 export(anno_bezier)
 export(anno_curve)
+export(anno_line)
+export(anno_rect)
 export(anno_text)
+export(anno_vhline)
 export(clear_anno_storage)
 export(get_anno_storage)
 export(gnames)
