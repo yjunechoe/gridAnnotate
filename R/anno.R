@@ -121,15 +121,14 @@ anno_rect <- function() {
   pos2 <- grid_locate()
   width <- pos2$x - pos1$x
   height <- pos1$y - pos2$y
-  browser()
   if (min(as.numeric(width), as.numeric(height)) < 0) {
     stop("Invalid corner point coordinate specifications.")
   }
   rect_annotation <- grid::rectGrob(
     x = pos1$x + width / 2,
     y = pos2$y + height / 2,
-    width = width / 2,
-    height = height / 2
+    width = width,
+    height = height
   )
   resolve_anno(rect_annotation)
 }
